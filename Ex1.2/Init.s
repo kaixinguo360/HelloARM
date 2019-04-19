@@ -1,0 +1,37 @@
+	AREA Init, CODE, READONLY
+	ENTRY
+	CODE32
+
+START
+	LDR R0, =DataBuf
+	LDR R1, [R0]
+	LDR R2, [R0]
+	MOV R3, #9
+
+LOOP
+	SUB R3, R3, #1
+	CMP R3, #0
+	BLEQ RESULT
+	LDR R4, [R0]
+	
+	CMP R2, R4
+	BLLT MAX
+	CMP R1, R4
+	BLGT MIN
+	ADD R0, R0, #4
+	B LOOP
+
+MAX
+	MOV R2, R4
+	ADD R0, R0, #4
+	B LOOP
+MIN
+	MOV R1, R4
+	ADD R0, R0, #4
+	B LOOP
+	
+RESULT
+	B .
+
+DataBuf DCD 3, 6, 1, 4, 8, 7, 2, 5
+	END
